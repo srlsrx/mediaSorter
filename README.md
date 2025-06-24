@@ -1,12 +1,73 @@
-# React + Vite
+# 📦 MediaSorter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**MediaSorter** is a desktop application built with **React + Electron** that automatically organizes your downloaded TV episodes. It scans your folders, detects the series and season from the filenames, and moves the episodes into structured folders for easy media library management.
 
-Currently, two official plugins are available:
+Perfect for users of **Jellyfin**, **Plex**, or local collections.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- Scan folders for video files.
+- Automatically detect the series and season from filenames.
+- Organize episodes into folders like: `Series Name/Season X`.
+- Moves files (does not copy).
+- Preview classification before applying changes.
+- Simple, intuitive GUI.
+- Supports `.mp4`, `.mkv`, `.avi`, and other formats.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- ⚛️ React
+- ⚡ Electron
+- 📦 Vite
+- 📁 Node.js + fs for file operations
+
+## 📷 Screenshots
+
+_(Coming soon)_
+
+## 📦 Getting Started (Development)
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/srlsrx/media-sorter.git
+cd media-sorter
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+## 🗂️ Project Structure
+
+```
+media-sorter/
+├── public/              # Static files
+├── src/
+│   ├── main/            # Electron logic
+│   └── renderer/        # React app
+├── electron.js          # Electron entry point
+├── vite.config.js
+├── package.json
+└── README.md
+```
+
+## ✅ Status
+
+🚧 MVP in progress
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+**MediaSorter** — because organizing your shows shouldn't be a full-time job.
