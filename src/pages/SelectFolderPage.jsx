@@ -17,7 +17,7 @@ const SelectFolder = () => {
             <p className="text-lg mb-4">Automatically organize your TV Series episodes into their proper folders</p>
 
             <Button icon={<Folder />}
-                className="text-white"
+                className="text-white bg-blue-500"
                 label="Select Source Folder"
                 onClick={handleFolderSelection}
             />
@@ -29,7 +29,7 @@ const SelectFolder = () => {
             )}
             <Button
                 icon={<Search />}
-                className="text-white"
+                className="text-white bg-green-600"
                 label="Scan for Episodes"
                 disabled={!sourceFolder}
                 onClick={handleFolderSelection}
