@@ -1,5 +1,5 @@
 import './App.css'
-import { SelectFolder } from './pages'
+import { SelectFolderPage, PreviewPage } from './pages'
 import { useViewManager } from './hooks'
 
 
@@ -8,10 +8,12 @@ function App() {
   
   const renderView = () => {
     switch (view) {
-      case 'SelectFolder':
-        return <SelectFolder changeView={changeView}/>
+      case 'SelectFolderPage':
+        return <SelectFolderPage changeView={changeView}/>
+      case 'PreviewPage':
+        return <PreviewPage changeView={changeView}/>
       default:
-        return <SelectFolder/>
+        return <SelectFolderPage changeView={changeView}/>
     }
   }
 

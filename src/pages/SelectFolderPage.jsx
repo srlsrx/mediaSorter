@@ -2,7 +2,7 @@ import { FolderHeart, Folder, Search } from "lucide-react"
 import { useState } from "react"
 import { Button } from "../components"
 
-const SelectFolder = () => {
+const SelectFolder = ({changeView}) => {
     const [sourceFolder, setSourceFolder] = useState("");
 
     const handleFolderSelection = () => {
@@ -10,6 +10,10 @@ const SelectFolder = () => {
         setSourceFolder("/path/to/selected/folder");
         console.log("Folder selected:", selected);
     }
+    const handleScanEpisodes = () => {
+        changeView('PreviewPage');
+    }
+
     return (
         <div className="flex flex-col text-center justify-center items-center w-151 h-screen gap-4">
             <FolderHeart size={70} className="mb-3 text-blue-500" />
@@ -32,7 +36,7 @@ const SelectFolder = () => {
                 className="text-white bg-green-600"
                 label="Scan for Episodes"
                 disabled={!sourceFolder}
-                onClick={handleFolderSelection}
+                onClick={handleScanEpisodes}
             />
         </div>
     )
