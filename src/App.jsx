@@ -1,5 +1,5 @@
 import './App.css'
-import { SelectFolderPage, PreviewPage } from './pages'
+import { SelectFolderPage, PreviewPage, ResultPage } from './pages'
 import { useViewManager } from './hooks'
 
 
@@ -13,7 +13,7 @@ function App() {
       case 'PreviewPage':
         return <PreviewPage changeView={changeView}/>
       default:
-        return <SelectFolderPage changeView={changeView}/>
+        return <ResultPage changeView={changeView}/>
     }
   }
 
