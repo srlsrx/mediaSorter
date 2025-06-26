@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CircleCheckBig, Folder, TriangleAlert, ChevronLeft, ExternalLink } from "lucide-react";
+import { CircleCheckBig, Folder, ChevronLeft, ExternalLink } from "lucide-react";
 import { Button } from "../components";
 
 const ResultPage = ({changeView}) => {
@@ -18,20 +18,7 @@ const ResultPage = ({changeView}) => {
                 <h2 className="flex gap-3 font-bold text-lg mb-4">{<Folder className="text-blue-500"/>} Processed Files</h2>
                 <div className="flex flex-col gap-2 bg-gray-100 rounded-md p-4 min-h-70 overflow-y-auto max-h-[40vh]">
                     <ul className="list-disc pl-5 italic">
-                        <li>Breaking Bad - S01E01 - Pilot.mkv</li>
-                        <li>Breaking Bad - S01E02 - Cat’s in the Bag.mkv</li>
-                        <li>Breaking Bad - S01E03 - ...And the Bag’s in the River.mkv</li>
-                        <li>Breaking Bad - S02E01 - Seven Thirty-Seven.mkv</li>
-                        <li>Breaking Bad - S02E02 - Grilled.mkv</li>
-                        <li>Breaking Bad - S02E03 - Bit by a Dead Bee.mkv</li>
-                        <li>Unknown File - unknown_file.mp4</li>
-                        <li>Breaking Bad - S01E01 - Pilot.mkv</li>
-                        <li>Breaking Bad - S01E02 - Cat’s in the Bag.mkv</li>
-                        <li>Breaking Bad - S01E03 - ...And the Bag’s in the River.mkv</li>
-                        <li>Breaking Bad - S02E01 - Seven Thirty-Seven.mkv</li>
-                        <li>Breaking Bad - S02E02 - Grilled.mkv</li>
-                        <li>Breaking Bad - S02E03 - Bit by a Dead Bee.mkv</li>
-                        <li>Unknown File - unknown_file.mp4</li>
+                        
                     </ul>
                 </div>
             </div>

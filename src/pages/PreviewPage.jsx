@@ -34,6 +34,18 @@ const PreviewPage = ({ changeView }) => {
         });
     };
 
+    const handleMoveFiles = async () => {
+        try {
+            const basePath = sourceFolder;
+            const movedFiles = await window.electronAPI.moveFiles(files, basePath);
+            console.log("Files moved successfully:", movedFiles);
+            setFiles(movedFiles);
+            changeView("ResultPage");
+        } catch (error) {
+            console.error("Error moving files:", error);
+        }
+    };
+
     useEffect(() => {
         const loadFiles = async () => {
             setLoading(true);
@@ -43,7 +55,7 @@ const PreviewPage = ({ changeView }) => {
                 const commonNames = detectCommonShowNames(classifiedFiles);
                 console.log("Common show names detected:", commonNames); // Debugging line
                 setFiles(commonNames);
-                setLoading(false);
+                setTimeout(() => setLoading(false), 500);
             } catch (error) {
                 console.error("Error loading files:", error);
             }
@@ -115,12 +127,12 @@ const PreviewPage = ({ changeView }) => {
                 {needsAtention ? (
                     <p className="flex gap-2 flex-4/2 text-red-700">{<Info />}{`${showInvalidCount} file(s) need manual input`}</p>
                 ) : (
-                    <p className="text-md">All files are ready to be organized.</p>
+                    <p className="flex gap-2 flex-4/2 text-gray-700">All files are ready to be organized.</p>
                 )}
                 <Button
                     className="text-white bg-green-600"
                     label="Confirm and Move Files"
-                    onClick={() => console.log("Organizing files...")}
+                    onClick={() => handleMoveFiles()}
                 />
             </div>
         </div>
