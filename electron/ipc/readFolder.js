@@ -6,7 +6,7 @@ function registerReadFolder() {
     ipcMain.handle('read-folder', async (event, folderPath) => {
         try {
             const files = await fs.promises.readdir(folderPath);
-            const fileData = files.map(file => {
+            const filesData = files.map(file => {
                 const ext = path.extname(file);
                 return {
                     name: file,
@@ -14,7 +14,7 @@ function registerReadFolder() {
                     path: path.join(folderPath, file),
                 };
             });
-            return fileData;
+            return filesData;
         } catch (error) {
             console.error('Error reading folder:', error);
             return [];

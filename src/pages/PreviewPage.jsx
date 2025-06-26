@@ -1,43 +1,65 @@
 import { Button, Input } from "../components";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Info, CircleCheckBig, ChevronLeft } from "lucide-react";
+import { useSourceFolderStore } from "../stores"
+import { classifyFiles } from "../utils/parseFiles";
+import { detectCommonShowNames } from "../utils/groupShows";
+import { buildDestination } from "../utils/buildDestination";
 
 const PreviewPage = ({ changeView }) => {
+    const { sourceFolder } = useSourceFolderStore();
+    const [files, setFiles] = useState([])
     const [needsAtention, setNeedsAttention] = useState(false);
     const [loading, setLoading] = useState(true);
-    const files = useMemo(() => [
-        { name: 'S01E01 - Pilot.mkv', show: 'Breaking Bad', season: 1, episode: 1, destionation: "/Series/Braking Bad/Season 1", detected: true },
-        { name: 'S01E02 - Cat’s in the Bag.mkv', show: 'Breaking Bad', season: 1, episode: 2, destionation: "/Series/Braking Bad/Season 1", detected: true },
-        { name: 'S01E03 - ...And the Bag’s in the River.mkv', show: 'Breaking Bad', season: 1, episode: 3, destionation: "/Series/Braking Bad/Season 1", detected: true },
-        { name: 'S02E01 - Seven Thirty-Seven.mkv', show: 'Breaking Bad', season: 2, episode: 1, destionation: "/Series/Braking Bad/Season 2", detected: true },
-        { name: 'S02E02 - Grilled.mkv', show: 'Breaking Bad', season: 2, episode: 2, destionation: "/Series/Braking Bad/Season 2", detected: true },
-        { name: 'S02E03 - Bit by a Dead Bee.mkv', show: 'Breaking Bad', season: 2, episode: 3, destionation: "/Series/Braking Bad/Season 2", detected: true },
-        { name: 'unknown_file.mp4', show: '', season: '', episode: '', destionation: "", detected: false }
-    ], []);
     const invalidCount = files.filter(file => !file.detected).length;
     const showInvalidCount = invalidCount > 99 ? '99+' : invalidCount;
+    const sortedFiles = [...files].sort((a, b) => {
+        if (!a.show) return 1;
+        if (!b.show) return -1;
+        return a.show.localeCompare(b.show);
+    });
+
+    const handleInputChange = (index, field, value) => {
+        setFiles(prevFiles => {
+            const updatedFiles = [...prevFiles];
+            const updatedFile = { ...updatedFiles[index], [field]: value };
+
+            if (["show", "season"].includes(field)) {
+                updatedFile.destination = buildDestination(updatedFile.show, updatedFile.season);
+            }
+
+            updatedFile.detected = false;
+            updatedFiles[index] = updatedFile;
+            return updatedFiles;
+        });
+    };
+
+    useEffect(() => {
+        const loadFiles = async () => {
+            setLoading(true);
+            try {
+                const rawFiles = await window.electronAPI.readFolder(sourceFolder);
+                const classifiedFiles = classifyFiles(rawFiles);
+                const commonNames = detectCommonShowNames(classifiedFiles);
+                console.log("Common show names detected:", commonNames); // Debugging line
+                setFiles(commonNames);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error loading files:", error);
+            }
+        }
+        if (sourceFolder) {
+            loadFiles();
+        } else {
+            console.warn("No source folder selected");
+        }
+    }, [sourceFolder]);
 
     useEffect(() => {
         const anyInvalid = files.some(file => file.detected === false);
         setNeedsAttention(anyInvalid);
     }, [files]);
-    useEffect(() => {
-        setLoading(true);
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1500); // 1.5 segundos
 
-        return () => clearTimeout(timer);
-    }, []);
-
-    const handleScan = async () => {
-        setLoading(true);
-        try {
-            // tu lógica para escanear carpeta
-        } finally {
-            setLoading(false);
-        }
-    };
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -68,13 +90,15 @@ const PreviewPage = ({ changeView }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {files.map((file, index) => (
+                        {sortedFiles.map((file, index) => (
                             <tr key={index} className="border-b-1 border-gray-300 text-sm">
-                                <td className="px-2 py-4">{file.name}</td>
-                                <td className="px-2 py-4"><Input type="text" value={file.show} /></td>
-                                <td className="px-2 py-4"><Input type="number" value={file.season} /></td>
-                                <td className="px-2 py-4"><Input type="number" value={file.episode} /></td>
-                                <td className="px-2 py-4">{file.destionation || 'Not set'}</td>
+                                <td className="px-2 py-4 max-w-[200px] truncate whitespace-nowrap overflow-hidden text-ellipsis" title={file.name}>
+                                    {file.name}
+                                </td>
+                                <td className="px-2 py-4"><Input type="text" onChange={(e) => handleInputChange(index, "show", e.target.value)} value={file.show} /></td>
+                                <td className="px-2 py-4"><Input type="number" onChange={(e) => handleInputChange(index, "season", Number(e.target.value))} value={file.season} /></td>
+                                <td className="px-2 py-4"><Input type="number" onChange={(e) => handleInputChange(index, "episode", Number(e.target.value))} value={file.episode} /></td>
+                                <td className="px-2 py-4">{file.destination || 'Not set'}</td>
                                 <td className="px-2 py-4">
                                     {file.detected ? (
                                         <span className="text-green-600 flex gap-1">{<CircleCheckBig />}Auto-Detected</span>

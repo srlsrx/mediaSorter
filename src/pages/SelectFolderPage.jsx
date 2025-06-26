@@ -15,7 +15,6 @@ const SelectFolder = ({changeView}) => {
     const handleScanEpisodes = () => {
         changeView('PreviewPage');
     }
-    console.log("electronAPI exists:", window.electronAPI?.selectFolder);
     return (
         <div className="flex flex-col text-center justify-center items-center w-151 h-screen gap-4">
             <FolderHeart size={70} className="mb-3 text-blue-500" />
