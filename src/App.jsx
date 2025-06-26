@@ -12,8 +12,10 @@ function App() {
         return <SelectFolderPage changeView={changeView}/>
       case 'PreviewPage':
         return <PreviewPage changeView={changeView}/>
-      default:
+      case 'ResultPage':
         return <ResultPage changeView={changeView}/>
+      default:
+        return <SelectFolderPage changeView={changeView}/>
     }
   }
 

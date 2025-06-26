@@ -1,19 +1,21 @@
 import { FolderHeart, Folder, Search } from "lucide-react"
-import { useState } from "react"
 import { Button } from "../components"
+import { useSourceFolderStore } from "../stores"
 
 const SelectFolder = ({changeView}) => {
-    const [sourceFolder, setSourceFolder] = useState("");
+    const {sourceFolder, setSourceFolder} = useSourceFolderStore();
 
-    const handleFolderSelection = () => {
-        const selected = "/path/to/folder";
-        setSourceFolder("/path/to/selected/folder");
-        console.log("Folder selected:", selected);
+    const handleFolderSelection = async () => {
+        const selected = await window.electronAPI.selectFolder();
+        if(selected) {
+            setSourceFolder(selected);
+            console.log("Folder selected:", selected);
+        };
     }
     const handleScanEpisodes = () => {
         changeView('PreviewPage');
     }
-
+    console.log("electronAPI exists:", window.electronAPI?.selectFolder);
     return (
         <div className="flex flex-col text-center justify-center items-center w-151 h-screen gap-4">
             <FolderHeart size={70} className="mb-3 text-blue-500" />

@@ -1,11 +1,8 @@
 // electron.js
-import { app, BrowserWindow } from 'electron';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import isDev from 'electron-is-dev';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const isDev = require('electron-is-dev');
+const registerIpcHandlers = require('./ipc/index.js');
 
 let mainWindow;
 
@@ -14,7 +11,9 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            nodeIntegration: true
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false,
         }
     });
 
@@ -27,10 +26,15 @@ function createWindow() {
     mainWindow.on('closed', () => (mainWindow = null));
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+    createWindow();
+    registerIpcHandlers();
+});
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
+
 app.on('activate', () => {
     if (mainWindow === null) createWindow();
 });
