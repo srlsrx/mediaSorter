@@ -114,8 +114,8 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
             </div>
             <div className="flex-1 overflow-y-auto overflow-x-hidden w-full">
                 <table className="w-full table-fixed">
-                    <thead className="bg-gray-100 border-b-1 border-t-1 border-gray-300">
-                        <tr>
+                    <thead className="bg-gray-100 border-b border-t-1 border-gray-400">
+                        <tr className="border-b border-gray-300 text-gray-700">
                             <th className="p-2 text-start w-[25%]">Filename</th>
                             <th className="p-2 text-start w-[16.666%]">Show</th>
                             <th className="p-2 text-start w-[10%]">Season</th>
@@ -126,13 +126,13 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                     </thead>
                     <tbody>
                         {files.map((file, index) => (
-                            <tr key={file.name} className="border-b-1 border-gray-300 text-sm">
+                            <tr key={file.name} className="border-b-1 border-gray-300 bg-gray-100 odd:bg-white text-sm">
                                 <td className="px-2 py-4 max-w-[200px] truncate whitespace-nowrap overflow-hidden text-ellipsis" title={file.name}>
                                     {file.name}
                                 </td>
-                                <td className="px-2 py-4"><Input type="text" defaultValue={file.show} onBlur={(e) => handleInputChange(index, "show", e.target.value)}/></td>
-                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.season)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onBlur={(e) => handleInputChange(index, "season", Number(e.target.value))}/></td>
-                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.episode)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onBlur={(e) => handleInputChange(index, "episode", Number(e.target.value))}/></td>
+                                <td className="px-2 py-4"><Input type="text" defaultValue={file.show} onChange={(e) => handleInputChange(index, "show", e.target.value)}/></td>
+                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.season)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onChange={(e) => handleInputChange(index, "season", Number(e.target.value))}/></td>
+                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.episode)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onChange={(e) => handleInputChange(index, "episode", Number(e.target.value))}/></td>
                                 <td className="px-2 py-4">{file.destination || 'Not set'}</td>
                                 <td className="px-2 py-4">
                                     {file.modified ? (
