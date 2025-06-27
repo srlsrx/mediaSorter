@@ -73,6 +73,7 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
         setNeedsAttention(anyInvalid);
     }, [files]);
 
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -109,8 +110,8 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                                     {file.name}
                                 </td>
                                 <td className="px-2 py-4"><Input type="text" onChange={(e) => handleInputChange(index, "show", e.target.value)} value={file.show} /></td>
-                                <td className="px-2 py-4"><Input type="number" onChange={(e) => handleInputChange(index, "season", Number(e.target.value))} value={file.season} /></td>
-                                <td className="px-2 py-4"><Input type="number" onChange={(e) => handleInputChange(index, "episode", Number(e.target.value))} value={file.episode} /></td>
+                                <td className="px-2 py-4"><Input type="number" min={0} step={1} onInput={(e) => {e.target.value = e.target.value.replace(/[^\d]/g, '');}} onChange={(e) => handleInputChange(index, "season", Number(e.target.value))} value={file.season} /></td>
+                                <td className="px-2 py-4"><Input type="number" min={0} step={1} onInput={(e) => {e.target.value = e.target.value.replace(/[^\d]/g, '');}} onChange={(e) => handleInputChange(index, "episode", Number(e.target.value))} value={file.episode} /></td>
                                 <td className="px-2 py-4">{file.destination || 'Not set'}</td>
                                 <td className="px-2 py-4">
                                     {file.detected ? (
