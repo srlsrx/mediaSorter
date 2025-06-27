@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "electron": "electron .",
-    "dist": "electron-builder"
+    "dist": "vite build && electron-builder"
   },
   "dependencies": {
     "lucide-react": "^0.523.0",

@@ -12,9 +12,7 @@ const ResultPage = ({changeView, movedFiles}) => {
         changeView("SelectFolderPage");
     }
     const handleViewDestination = () => {
-        if (movedFiles.length > 0) {
-            window.electronAPI.openFolder(sourceFolder);
-        }
+            window.electronAPI.openFolder(sourceFolder + "/Shows");
     }
 
     return (
