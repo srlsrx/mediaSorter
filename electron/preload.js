@@ -4,4 +4,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     selectFolder: () => ipcRenderer.invoke('select-folder'),
     readFolder: (folderPath) => ipcRenderer.invoke('read-folder', folderPath),
     moveFiles: (files, basePath) => ipcRenderer.invoke('move-files', files, basePath),
+    openFolder: (folderPath) => ipcRenderer.invoke('open-folder', folderPath)
 });

@@ -1,7 +1,7 @@
 // electron.js
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const isDev = require('electron-is-dev');
+const isDev = app.isPackaged ? false : true;
 const registerIpcHandlers = require('./ipc/index.js');
 
 let mainWindow;
@@ -19,7 +19,7 @@ function createWindow() {
 
     const startURL = isDev
         ? 'http://localhost:5173'
-        : `file://${path.join(__dirname, 'dist/index.html')}`;
+        : `file://${path.join(__dirname, '../dist/index.html')}`;
 
     mainWindow.loadURL(startURL);
 

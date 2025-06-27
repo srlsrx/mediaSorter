@@ -1,10 +1,21 @@
 import { useState } from "react"
-import { CircleCheckBig, Folder, ChevronLeft, ExternalLink } from "lucide-react";
+import { CircleCheckBig, Folder, ExternalLink } from "lucide-react";
 import { Button } from "../components";
+import { useSourceFolderStore } from "../stores";
 
-const ResultPage = ({changeView}) => {
+const ResultPage = ({changeView, movedFiles}) => {
     const [loading, setLoading] = useState(true);
     const contentClass = "flex-grow px-10 pb-10 overflow-y-auto gap-10";
+    const { sourceFolder } = useSourceFolderStore();
+
+    const handleBackToStart = () => {
+        changeView("SelectFolderPage");
+    }
+    const handleViewDestination = () => {
+        if (movedFiles.length > 0) {
+            window.electronAPI.openFolder(sourceFolder);
+        }
+    }
 
     return (
         <div className="w-screen h-screen flex flex-col justify-between overflow-hidden">
@@ -18,17 +29,18 @@ const ResultPage = ({changeView}) => {
                 <h2 className="flex gap-3 font-bold text-lg mb-4">{<Folder className="text-blue-500"/>} Processed Files</h2>
                 <div className="flex flex-col gap-2 bg-gray-100 rounded-md p-4 min-h-70 overflow-y-auto max-h-[40vh]">
                     <ul className="list-disc pl-5 italic">
-                        
+                        {movedFiles.length > 0 ? movedFiles.map((file, index) => (
+                            <li key={index} className="text-gray-800">{file.name} — T{file.season}E{file.episode} — {file.destination}</li>
+                        )) : (
+                            <li className="text-gray-500">No files were moved.</li>
+                        )}
                     </ul>
                 </div>
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-200 px-4 py-3 shadow-md flex justify-between items-center">
-                <button className="flex gap-3 flex-grow min-w-sm items-center cursor-pointer" onClick={() => changeView("PreviewPage")}>
-                    <ChevronLeft />Back to preview
-                </button>
-                <div className="flex gap-4">
-                    <Button label={"View Destination Folder"} icon={<ExternalLink />} className={"bg-blue-500 text-white min-w-90"} />
-                    <Button label={"Back to Start"} className={"bg-gray-800 text-white min-w-[12rem]"} />
+                <div className="flex justify-between items-center gap-4 w-full">
+                    <Button label={"View Destination Folder"} onClick={handleViewDestination} icon={<ExternalLink />} className={"bg-blue-500 text-white min-w-90"} />
+                    <Button label={"Back to Start"} onClick={handleBackToStart} className={"bg-gray-800 text-white min-w-[12rem]"} />
                 </div>
             </div>
         </div>

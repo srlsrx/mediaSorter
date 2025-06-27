@@ -6,7 +6,7 @@ import { classifyFiles } from "../utils/parseFiles";
 import { detectCommonShowNames } from "../utils/groupShows";
 import { buildDestination } from "../utils/buildDestination";
 
-const PreviewPage = ({ changeView }) => {
+const PreviewPage = ({ changeView, setMovedFiles }) => {
     const { sourceFolder } = useSourceFolderStore();
     const [files, setFiles] = useState([])
     const [needsAtention, setNeedsAttention] = useState(false);
@@ -40,6 +40,7 @@ const PreviewPage = ({ changeView }) => {
             const movedFiles = await window.electronAPI.moveFiles(files, basePath);
             console.log("Files moved successfully:", movedFiles);
             setFiles(movedFiles);
+            setMovedFiles(movedFiles);
             changeView("ResultPage");
         } catch (error) {
             console.error("Error moving files:", error);
@@ -93,12 +94,12 @@ const PreviewPage = ({ changeView }) => {
                 <table className="w-full table-fixed">
                     <thead className="bg-gray-100 border-b-1 border-t-1 border-gray-300">
                         <tr>
-                            <th className="p-2 text-start w-1/4">Filename</th>
-                            <th className="p-2 text-start w-1/6">Show</th>
-                            <th className="p-2 text-start w-1/10">Season</th>
-                            <th className="p-2 text-start w-1/10">Episode</th>
-                            <th className="p-2 text-start w-1/4">Destination</th>
-                            <th className="p-2 text-start w-1/6">Status</th>
+                            <th className="p-2 text-start w-[25%]">Filename</th>
+                            <th className="p-2 text-start w-[16.666%]">Show</th>
+                            <th className="p-2 text-start w-[10%]">Season</th>
+                            <th className="p-2 text-start w-[10%]">Episode</th>
+                            <th className="p-2 text-start w-[25%]">Destination</th>
+                            <th className="p-2 text-start w-[16.666%]">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,9 +126,9 @@ const PreviewPage = ({ changeView }) => {
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex justify-around items-center">
                 {needsAtention ? (
-                    <p className="flex gap-2 flex-4/2 text-red-700">{<Info />}{`${showInvalidCount} file(s) need manual input`}</p>
+                    <p className="flex gap-2 flex-[200%] text-red-700">{<Info />}{`${showInvalidCount} file(s) need manual input`}</p>
                 ) : (
-                    <p className="flex gap-2 flex-4/2 text-gray-700">All files are ready to be organized.</p>
+                    <p className="flex gap-2 flex-[200%] text-gray-700">All files are ready to be organized.</p>
                 )}
                 <Button
                     className="text-white bg-green-600"
