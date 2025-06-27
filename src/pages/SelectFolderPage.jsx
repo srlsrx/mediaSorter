@@ -18,7 +18,7 @@ const SelectFolder = ({changeView}) => {
     }
 
     useEffect(()=>{
-        window.electronAPI.setMinWindow()
+        window.electronAPI.setMinWindow(900, 620)
     })
 
     return (

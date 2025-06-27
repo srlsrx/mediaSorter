@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CircleCheckBig, Folder, ExternalLink } from "lucide-react";
 import { Button } from "../components";
 import { useSourceFolderStore } from "../stores";
@@ -14,6 +14,10 @@ const ResultPage = ({changeView, movedFiles}) => {
     const handleViewDestination = () => {
             window.electronAPI.openFolder(sourceFolder + "/Shows");
     }
+
+    useEffect(() => {
+        window.electronAPI.setMinWindow(900, 800);
+    }, []);
 
     return (
         <div className="w-screen h-screen flex flex-col justify-between overflow-hidden">

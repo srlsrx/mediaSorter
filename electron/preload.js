@@ -6,5 +6,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     moveFiles: (files, basePath) => ipcRenderer.invoke('move-files', files, basePath),
     openFolder: (folderPath) => ipcRenderer.invoke('open-folder', folderPath),
     maximizeWindow: () => ipcRenderer.invoke('maximize-window'),
-    setMinWindow: () => ipcRenderer.invoke('set-min-window'),
+    setMinWindow: (widht, height) => ipcRenderer.invoke('set-min-window', widht, height),
 });

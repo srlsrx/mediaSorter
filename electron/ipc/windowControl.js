@@ -1,9 +1,9 @@
 const { ipcMain } = require('electron');
 
 function registerWindowControlHandler(mainWindow) {
-    ipcMain.handle('set-min-window', () => {
+    ipcMain.handle('set-min-window', (event, widht, height) => {
         if (mainWindow) {
-            mainWindow.setSize(900, 620);
+            mainWindow.setSize(widht, height);
             mainWindow.center();
         }
     });
