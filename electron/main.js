@@ -10,8 +10,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 900,
         minWidth: 900,
-        height: 620,
-        minHeight: 620,
+        height: 800,
+        minHeight: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
@@ -30,7 +30,7 @@ function createWindow() {
 
 app.on('ready', () => {
     createWindow();
-    registerIpcHandlers();
+    registerIpcHandlers(mainWindow);
 });
 
 app.on('window-all-closed', () => {

@@ -14,6 +14,10 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
     const invalidCount = files.filter(file => !file.detected).length;
     const showInvalidCount = invalidCount > 99 ? '99+' : invalidCount;
 
+    useEffect(() => {
+        window.electronAPI.maximizeWindow();
+    }, []);
+
     const handleInputChange = (index, field, value) => {
         setFiles(prevFiles => {
             const updatedFiles = [...prevFiles];

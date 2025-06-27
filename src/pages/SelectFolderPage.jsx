@@ -1,6 +1,7 @@
 import { FolderHeart, Folder, Search } from "lucide-react"
 import { Button } from "../components"
 import { useSourceFolderStore } from "../stores"
+import { useEffect } from "react";
 
 const SelectFolder = ({changeView}) => {
     const {sourceFolder, setSourceFolder} = useSourceFolderStore();
@@ -15,6 +16,11 @@ const SelectFolder = ({changeView}) => {
     const handleScanEpisodes = () => {
         changeView('PreviewPage');
     }
+
+    useEffect(()=>{
+        window.electronAPI.setMinWindow()
+    })
+
     return (
         <div className="flex flex-col text-center justify-center items-center w-151 h-screen gap-4">
             <FolderHeart size={70} className="mb-3 text-blue-500" />
