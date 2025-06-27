@@ -14,7 +14,7 @@ export function classifyFiles(files) {
 
         let show = inferShowName(file.name);
         let detected = Boolean(match && show && !/[[(]/.test(show));
-
+        let modified = false;
         let finalSeason = season;
         let finalEpisode = episode;
 
@@ -40,6 +40,7 @@ export function classifyFiles(files) {
             episode: finalEpisode,
             destination: detected ? `/Shows/${show}/Season ${finalSeason}` : '',
             detected,
+            modified,
         };
     });
 }

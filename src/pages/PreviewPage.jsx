@@ -1,6 +1,6 @@
 import { Button, Input } from "../components";
 import { useState, useEffect } from "react";
-import { Info, CircleCheckBig, ChevronLeft } from "lucide-react";
+import { Info, CircleCheckBig, ChevronLeft, Check } from "lucide-react";
 import { useSourceFolderStore } from "../stores"
 import { classifyFiles } from "../utils/parseFiles";
 import { detectCommonShowNames } from "../utils/groupShows";
@@ -13,22 +13,32 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
     const [loading, setLoading] = useState(true);
     const invalidCount = files.filter(file => !file.detected).length;
     const showInvalidCount = invalidCount > 99 ? '99+' : invalidCount;
-    const sortedFiles = [...files].sort((a, b) => {
-        if (!a.show) return 1;
-        if (!b.show) return -1;
-        return a.show.localeCompare(b.show);
-    });
 
     const handleInputChange = (index, field, value) => {
         setFiles(prevFiles => {
             const updatedFiles = [...prevFiles];
-            const updatedFile = { ...updatedFiles[index], [field]: value };
+            const currentFile = updatedFiles[index];
+            const currentValue = currentFile[field];
+
+            if (currentValue === value) {
+                return prevFiles;
+            }
+
+            const updatedFile = { ...currentFile, [field]: value, lastModified: Date.now() };
 
             if (["show", "season"].includes(field)) {
                 updatedFile.destination = buildDestination(updatedFile.show, updatedFile.season);
             }
 
-            updatedFile.detected = false;
+            if (updatedFile.show && updatedFile.season > 0 && updatedFile.episode > 0) {
+                updatedFile.detected = true;
+                updatedFile.modified = true;
+            } else {
+                updatedFile.detected = false;
+                updatedFile.modified = false;
+            }
+
+            
             updatedFiles[index] = updatedFile;
             return updatedFiles;
         });
@@ -55,6 +65,17 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                 const classifiedFiles = classifyFiles(rawFiles);
                 const commonNames = detectCommonShowNames(classifiedFiles);
                 console.log("Common show names detected:", commonNames); // Debugging line
+                commonNames.sort((a, b) => {
+                    if (!a.show) return 1;
+                    if (!b.show) return -1;
+                    const showCompare = a.show.localeCompare(b.show);
+                    if (showCompare !== 0) return showCompare;
+
+                    const seasonCompare = (Number(a.season) || 0) - (Number(b.season) || 0);
+                    if (seasonCompare !== 0) return seasonCompare;
+
+                    return (Number(a.episode) || 0) - (Number(b.episode) || 0);
+                });
                 setFiles(commonNames);
                 setTimeout(() => setLoading(false), 500);
             } catch (error) {
@@ -104,17 +125,19 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedFiles.map((file, index) => (
-                            <tr key={index} className="border-b-1 border-gray-300 text-sm">
+                        {files.map((file, index) => (
+                            <tr key={file.name} className="border-b-1 border-gray-300 text-sm">
                                 <td className="px-2 py-4 max-w-[200px] truncate whitespace-nowrap overflow-hidden text-ellipsis" title={file.name}>
                                     {file.name}
                                 </td>
-                                <td className="px-2 py-4"><Input type="text" onChange={(e) => handleInputChange(index, "show", e.target.value)} value={file.show} /></td>
-                                <td className="px-2 py-4"><Input type="number" min={0} step={1} onInput={(e) => {e.target.value = e.target.value.replace(/[^\d]/g, '');}} onChange={(e) => handleInputChange(index, "season", Number(e.target.value))} value={file.season} /></td>
-                                <td className="px-2 py-4"><Input type="number" min={0} step={1} onInput={(e) => {e.target.value = e.target.value.replace(/[^\d]/g, '');}} onChange={(e) => handleInputChange(index, "episode", Number(e.target.value))} value={file.episode} /></td>
+                                <td className="px-2 py-4"><Input type="text" defaultValue={file.show} onBlur={(e) => handleInputChange(index, "show", e.target.value)}/></td>
+                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.season)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onBlur={(e) => handleInputChange(index, "season", Number(e.target.value))}/></td>
+                                <td className="px-2 py-4"><Input type="number" defaultValue={Number(file.episode)} min={0} step={1} onInput={(e) => { e.target.value = e.target.value.replace(/[^\d]/g, ''); }} onBlur={(e) => handleInputChange(index, "episode", Number(e.target.value))}/></td>
                                 <td className="px-2 py-4">{file.destination || 'Not set'}</td>
                                 <td className="px-2 py-4">
-                                    {file.detected ? (
+                                    {file.modified ? (
+                                        <span className="text-yellow-600 flex gap-1">{<Info />}Modified</span>
+                                    ) : file.detected ? (
                                         <span className="text-green-600 flex gap-1">{<CircleCheckBig />}Auto-Detected</span>
                                     ) : (
                                         <span className="text-red-600 flex gap-1">{<Info />}Not Detected</span>
@@ -129,7 +152,7 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                 {needsAtention ? (
                     <p className="flex gap-2 flex-[200%] text-red-700">{<Info />}{`${showInvalidCount} file(s) need manual input`}</p>
                 ) : (
-                    <p className="flex gap-2 flex-[200%] text-gray-700">All files are ready to be organized.</p>
+                    <p className="flex gap-2 flex-[200%] text-green-600">{<Check/>}All files are ready to be organized.</p>
                 )}
                 <Button
                     className="text-white bg-green-600"
