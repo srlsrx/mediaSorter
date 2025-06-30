@@ -98,7 +98,10 @@ npm run start
 
 ## 📄 License
 
+
 This project is licensed under the [MIT License](LICENSE).
+
+You can find the full changelog in the [CHANGELOG.md](CHANGELOG.md) file.
 
 
 ## 🔮 Future Features
