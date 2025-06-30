@@ -129,12 +129,12 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
         <>
         {progressVisible && renderProgressBar()}
         <div className="flex flex-col min-h-screen">
-            <div className="flex sticky top-0 bg-white border-b border-gray-200 p-4 items-center">
+            <div className="flex bg-white border-b border-gray-200 p-4 items-center">
                 <button className="flex flex-1 gap-3 cursor-pointer" onClick={() => { changeView("SelectFolderPage") }}>{<ChevronLeft />}Back</button>
                 <h1 className="text-2xl flex-1 text-center font-bold">Classification Preview</h1>
                 <p className="text-sm flex-1 text-right">{files.length} file(s) found • {files.length - invalidCount} ready to process</p>
             </div>
-            <div className="flex-1 overflow-y-auto pb-[150px] overflow-x-hidden max-h-screen w-full">
+            <div className="overflow-y-auto overflow-x-hidden w-full" style={{ maxHeight: 'calc(100vh - 144px)' }}>
                     {files.length > 0 ?(
                 <table className="w-full table-fixed">
                     <thead className="bg-gray-100 border-b border-t-1 border-gray-400">
@@ -178,7 +178,7 @@ const PreviewPage = ({ changeView, setMovedFiles }) => {
                 </div>
             )}
             </div>
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex justify-around items-center">
+            <div className="bg-white border-t border-gray-200 p-4 flex justify-around items-center">
                 {files.length === 0 ? (
                     <p className="lex gap-2 flex-[200%] text-gray-500">No files found in the selected folder.</p>
                 ) :needsAtention ? (
