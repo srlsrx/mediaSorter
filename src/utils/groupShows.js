@@ -1,3 +1,13 @@
+/**
+ * Detects common show names among a list of files and normalizes them.
+ * Groups files by the first token of the show name, finds the longest common prefix,
+ * and updates each file's show and destination properties accordingly.
+ *
+ * @param {Array<Object>} files - Array of file objects with at least 'show' and 'season' properties.
+ * @returns {Array<Object>} The updated array of file objects with normalized show names and destinations.
+ *
+ * @author Nico
+ */
 export function detectCommonShowNames(files) {
     const groups = {};
 

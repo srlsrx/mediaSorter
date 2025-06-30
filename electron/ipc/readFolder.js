@@ -1,3 +1,13 @@
+/**
+ * Registers the IPC handler for reading the contents of a folder.
+ *
+ * Handles the 'read-folder' IPC event, returning an array of file objects
+ * with name, extension, and path for each file in the specified folder.
+ *
+ * @module electron/ipc/readFolder
+ * @returns {void}
+ * @author Nico
+ */
 const { ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');

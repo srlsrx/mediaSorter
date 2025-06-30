@@ -1,4 +1,16 @@
-// electron.js
+/**
+ * Main Electron process file.
+ * Sets up the main application window and handles app lifecycle events.
+ *
+ * - Creates the main BrowserWindow with preload script and security settings.
+ * - Loads the React app in development or production mode.
+ * - Registers IPC handlers for communication between main and renderer processes.
+ * - Handles window and application lifecycle events.
+ *
+ * @module electron/main
+ * @author Nico
+ */
+
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = app.isPackaged ? false : true;
@@ -6,6 +18,9 @@ const registerIpcHandlers = require('./ipc/index.js');
 
 let mainWindow;
 
+/**
+ * Creates the main application window.
+ */
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 900,

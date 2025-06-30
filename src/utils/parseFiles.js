@@ -1,3 +1,12 @@
+/**
+ * Classifies media files by extracting show name, season, and episode from filenames.
+ * Adds detection status and destination path for each file.
+ *
+ * @param {Array<Object>} files - Array of file objects with at least 'name' and 'extension' properties.
+ * @returns {Array<Object>} Array of classified file objects with show, season, episode, destination, detected, and modified properties.
+ *
+ * @author Nico
+ */
 export function classifyFiles(files) {
     const videoExtensions = ['.mkv', '.mp4', '.avi', '.mov'];
     files = files.filter(file => videoExtensions.includes(file.extension.toLowerCase()));
@@ -45,6 +54,14 @@ export function classifyFiles(files) {
     });
 }
 
+/**
+ * Infers the show name from a filename by removing extension, brackets, parentheses, and episode/season patterns.
+ *
+ * @param {string} filename - The name of the file.
+ * @returns {string} The inferred show name.
+ *
+ * @author Nico
+ */
 function inferShowName(filename) {
     const nameWithoutExtension = filename.replace(/\.[^/.]+$/, '');
     const cleanedName = nameWithoutExtension

@@ -1,3 +1,12 @@
+/**
+ * Registers the IPC handler for opening a folder in the system file explorer.
+ *
+ * Handles the 'open-folder' IPC event, opening the specified folder path using Electron's shell module.
+ *
+ * @module electron/ipc/openFolder
+ * @returns {void}
+ * @author Nico
+ */
 const { ipcMain } = require('electron');
 const { shell } = require('electron');
 const path = require('path');

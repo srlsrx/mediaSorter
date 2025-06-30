@@ -1,14 +1,25 @@
+/**
+ * SelectFolderPage component allows the user to select a source folder
+ * and initiate the scan for media episodes.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {function} props.changeView - Function to change the current view/page.
+ * @returns {JSX.Element} The rendered select folder page.
+ *
+ * @author Nico
+ */
 import { FolderHeart, Folder, Search } from "lucide-react"
 import { Button } from "../components"
 import { useSourceFolderStore } from "../stores"
 import { useEffect } from "react";
 
-const SelectFolder = ({changeView}) => {
-    const {sourceFolder, setSourceFolder} = useSourceFolderStore();
+const SelectFolder = ({ changeView }) => {
+    const { sourceFolder, setSourceFolder } = useSourceFolderStore();
 
     const handleFolderSelection = async () => {
         const selected = await window.electronAPI.selectFolder();
-        if(selected) {
+        if (selected) {
             setSourceFolder(selected);
             console.log("Folder selected:", selected);
         };
@@ -17,7 +28,7 @@ const SelectFolder = ({changeView}) => {
         changeView('PreviewPage');
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         window.electronAPI.setMinWindow(900, 620)
     })
 
@@ -34,8 +45,8 @@ const SelectFolder = ({changeView}) => {
             />
             {sourceFolder && (
                 <div className="w-full justify-start text-start ring ring-gray-300 bg-gray-200 rounded-md p-4">
-                <p className="text-md">Selected Source Folder:</p>
-                <p className="text-md font-bold italic">{sourceFolder}</p>
+                    <p className="text-md">Selected Source Folder:</p>
+                    <p className="text-md font-bold italic">{sourceFolder}</p>
                 </div>
             )}
             <Button

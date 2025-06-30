@@ -1,3 +1,13 @@
+/**
+ * Registers IPC handlers for window control actions.
+ *
+ * Handles 'set-min-window' and 'maximize-window' IPC events to control the Electron window size and state.
+ *
+ * @module electron/ipc/windowControl
+ * @param {BrowserWindow} mainWindow - The main Electron BrowserWindow instance.
+ * @returns {void}
+ * @author Nico
+ */
 const { ipcMain } = require('electron');
 
 function registerWindowControlHandler(mainWindow) {

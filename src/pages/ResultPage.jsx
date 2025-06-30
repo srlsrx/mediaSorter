@@ -1,10 +1,21 @@
-import { useEffect, useState } from "react"
+/**
+ * ResultPage component displays the result after files have been organized.
+ * Shows a summary, a list of processed files, and actions to view the destination folder or return to the start.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {function} props.changeView - Function to change the current view/page.
+ * @param {Array<Object>} props.movedFiles - Array of moved file objects.
+ * @returns {JSX.Element} The rendered result page.
+ *
+ * @author Nico
+ */
+import { useEffect } from "react"
 import { CircleCheckBig, Folder, ExternalLink } from "lucide-react";
 import { Button } from "../components";
 import { useSourceFolderStore } from "../stores";
 
-const ResultPage = ({changeView, movedFiles}) => {
-    const [loading, setLoading] = useState(true);
+const ResultPage = ({ changeView, movedFiles }) => {
     const contentClass = "flex-grow px-10 pb-10 overflow-y-auto gap-10";
     const { sourceFolder } = useSourceFolderStore();
 
@@ -12,7 +23,7 @@ const ResultPage = ({changeView, movedFiles}) => {
         changeView("SelectFolderPage");
     }
     const handleViewDestination = () => {
-            window.electronAPI.openFolder(sourceFolder + "/Shows");
+        window.electronAPI.openFolder(sourceFolder + "/Shows");
     }
 
     useEffect(() => {
@@ -27,8 +38,8 @@ const ResultPage = ({changeView, movedFiles}) => {
                     <h1 className="text-3xl">Files Organized Successfully</h1>
                     <p className="text-xl mb-7 mt-3">files have been moved to their proper locations.</p>
                 </div>
-                <hr className="mb-6"/>
-                <h2 className="flex gap-3 font-bold text-lg mb-4">{<Folder className="text-blue-500"/>} Processed Files</h2>
+                <hr className="mb-6" />
+                <h2 className="flex gap-3 font-bold text-lg mb-4">{<Folder className="text-blue-500" />} Processed Files</h2>
                 <div className="flex flex-col gap-2 bg-gray-100 rounded-md p-4 min-h-70 overflow-y-auto max-h-[40vh]">
                     <ul className="list-disc pl-5 italic">
                         {movedFiles.length > 0 ? movedFiles.map((file, index) => (
