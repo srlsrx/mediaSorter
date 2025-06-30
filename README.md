@@ -102,7 +102,7 @@ npm run start
 This project is licensed under the [MIT License](LICENSE).
 
 
-## 📄 Changelog
+## 📝 Changelog
 
 You can find the full changelog in the [CHANGELOG.md](CHANGELOG.md) file.
 
