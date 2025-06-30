@@ -50,6 +50,7 @@
   "build": {
     "appId": "com.nico.mediasorter",
     "productName": "MediaSorter",
+    "artifactName": "${productName}-${version}-${os}.${ext}",
     "directories": {
       "output": "dist"
     },
