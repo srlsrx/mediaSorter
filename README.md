@@ -8,7 +8,16 @@ Perfect for users of **Jellyfin**, **Plex**, or local collections.
 
 - Scan folders to detect video files automatically.
 - Identify series name and season from the filenames.
+- Scan folders to detect video files automatically.
+- Identify series name and season from the filenames.
 - Organize episodes into folders like: `Series Name/Season X`.
+- Preview how the files will be sorted before applying changes.
+- Move the video files (they are not duplicated).
+- Open the destination folder after sorting.
+- Mark files as “Modified” if you adjust the information manually.
+- User-friendly interface for easy navigation.
+- Supports common video formats like `.mp4`, `.mkv`, `.avi`, and more.
+- Automatically resizes the app window for better viewing depending on the screen.
 - Preview how the files will be sorted before applying changes.
 - Move the video files (they are not duplicated).
 - Open the destination folder after sorting.
@@ -37,12 +46,19 @@ Perfect for users of **Jellyfin**, **Plex**, or local collections.
 ```bash
 git clone https://github.com/srlsrx/mediaSorter.git
 cd mediaSorter
+git clone https://github.com/srlsrx/mediaSorter.git
+cd mediaSorter
 ```
 
 2. Install dependencies:
 
 ```bash
 npm install
+```
+
+3.	Initialize Tailwind config (only the first time, if not already present):
+```bash
+npx tailwindcss init -p
 ```
 
 3.	Initialize Tailwind config (only the first time, if not already present):
@@ -63,9 +79,39 @@ npm run dev
 ```
 
 
+4. Start the electron server:
+   
+```bash
+   npm run electron
+```
+
+
 ## 🗂️ Project Structure
 
 ```
+📦 media-sorter
+├── electron/                  # Electron backend (main process)
+│   ├── ipc/                   # IPC handlers for communication
+│   ├── main.js                # Entry point for Electron
+│   └── preload.js             # Preload script for secure context bridging
+├── public/                    # Static assets
+│   └── fonts/                 # Custom fonts
+├── src/                       # Frontend source code (React)
+│   ├── App.jsx                # Root component
+│   ├── App.css                # Global styles
+│   ├── assets/                # Static assets (images, icons…)
+│   ├── components/            # Reusable UI components
+│   ├── hooks/                 # Custom React hooks
+│   ├── index.css              # TailwindCSS + global styles
+│   ├── main.jsx               # React entry point
+│   ├── pages/                 # Page-level React components
+│   ├── stores/                # Zustand global state stores
+│   └── utils/                 # Utility/helper functions
+├── index.html                 # HTML entry point for Vite
+├── package.json               # Project metadata and dependencies
+├── postcss.config.js          # PostCSS configuration
+├── tailwind.config.js         # TailwindCSS configuration
+└──vite.config.js              # Vite bundler configuration
 📦 media-sorter
 ├── electron/                  # Electron backend (main process)
 │   ├── ipc/                   # IPC handlers for communication
