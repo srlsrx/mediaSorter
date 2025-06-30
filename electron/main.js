@@ -12,6 +12,7 @@ function createWindow() {
         minWidth: 900,
         height: 620,
         minHeight: 620,
+        show: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
@@ -24,6 +25,10 @@ function createWindow() {
         : `file://${path.join(__dirname, '../dist/index.html')}`;
 
     mainWindow.loadURL(startURL);
+
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.show();
+    });
 
     mainWindow.on('closed', () => (mainWindow = null));
 }
