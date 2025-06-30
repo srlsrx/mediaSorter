@@ -1,7 +1,7 @@
 {
   "name": "media-sorter",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "author": "Nico Fernández Rozas",
   "description": "A desktop app built with React and Electron to automatically detect, rename and sort media files into organized folders.",
   "license": "MIT",

@@ -1,4 +1,5 @@
 # 📦 MediaSorter
+**Version: 1.0.0-beta.1**
 
 **MediaSorter** is a desktop application built with **React + Electron** that automatically organizes your downloaded TV episodes. It scans your folders, detects the series and season from the filenames, and moves the episodes into structured folders for easy media library management.
 
