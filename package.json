@@ -21,8 +21,7 @@
     "preview": "vite preview",
     "electron": "electron .",
     "start": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "dist": "vite build && electron-builder",
-    "docs": "jsdoc -c jsdoc.json"
+    "dist": "vite build && electron-builder"
   },
   "dependencies": {
     "lucide-react": "^0.523.0",
