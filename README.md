@@ -26,7 +26,9 @@ Perfect for users of **Jellyfin**, **Plex**, or local collections.
 
 ## 📷 Screenshots
 
-_(Coming soon)_
+![Select Folder View](src/assets/screenshots/select-folder-view.png)
+![Preview View](src/assets/screenshots/preview-view.png)
+![Result View](src/assets/screenshots/result-view.png)
 
 ## 📦 Getting Started (Development)
 
