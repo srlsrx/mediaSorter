@@ -6,13 +6,16 @@ Perfect for users of **Jellyfin**, **Plex**, or local collections.
 
 ## 🚀 Features
 
-- Scan folders for video files.
-- Automatically detect the series and season from filenames.
+- Scan folders to detect video files automatically.
+- Identify series name and season from the filenames.
 - Organize episodes into folders like: `Series Name/Season X`.
-- Moves files (does not copy).
-- Preview classification before applying changes.
-- Simple, intuitive GUI.
-- Supports `.mp4`, `.mkv`, `.avi`, and other formats.
+- Preview how the files will be sorted before applying changes.
+- Move the video files (they are not duplicated).
+- Open the destination folder after sorting.
+- Mark files as “Modified” if you adjust the information manually.
+- User-friendly interface for easy navigation.
+- Supports common video formats like `.mp4`, `.mkv`, `.avi`, and more.
+- Automatically resizes the app window for better viewing depending on the screen.
 
 ## 🛠️ Tech Stack
 
@@ -30,8 +33,8 @@ _(Coming soon)_
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/srlsrx/media-sorter.git
-cd media-sorter
+git clone https://github.com/srlsrx/mediaSorter.git
+cd mediaSorter
 ```
 
 2. Install dependencies:
@@ -40,24 +43,50 @@ cd media-sorter
 npm install
 ```
 
+3.	Initialize Tailwind config (only the first time, if not already present):
+```bash
+npx tailwindcss init -p
+```
+
 3. Start the development server:
 
 ```bash
 npm run dev
 ```
 
+4. Start the electron server:
+   
+```bash
+   npm run electron
+```
+
+
 ## 🗂️ Project Structure
 
 ```
-media-sorter/
-├── public/              # Static files
-├── src/
-│   ├── main/            # Electron logic
-│   └── renderer/        # React app
-├── electron.js          # Electron entry point
-├── vite.config.js
-├── package.json
-└── README.md
+📦 media-sorter
+├── electron/                  # Electron backend (main process)
+│   ├── ipc/                   # IPC handlers for communication
+│   ├── main.js                # Entry point for Electron
+│   └── preload.js             # Preload script for secure context bridging
+├── public/                    # Static assets
+│   └── fonts/                 # Custom fonts
+├── src/                       # Frontend source code (React)
+│   ├── App.jsx                # Root component
+│   ├── App.css                # Global styles
+│   ├── assets/                # Static assets (images, icons…)
+│   ├── components/            # Reusable UI components
+│   ├── hooks/                 # Custom React hooks
+│   ├── index.css              # TailwindCSS + global styles
+│   ├── main.jsx               # React entry point
+│   ├── pages/                 # Page-level React components
+│   ├── stores/                # Zustand global state stores
+│   └── utils/                 # Utility/helper functions
+├── index.html                 # HTML entry point for Vite
+├── package.json               # Project metadata and dependencies
+├── postcss.config.js          # PostCSS configuration
+├── tailwind.config.js         # TailwindCSS configuration
+└──vite.config.js              # Vite bundler configuration
 ```
 
 ## ✅ Status
@@ -67,6 +96,19 @@ media-sorter/
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
+## 🔮 Funcionalidades futuras
+
+Estas son algunas mejoras previstas para futuras versiones:
+
+- [ ] Soporte para subtítulos (.srt)
+- [ ] Mejora de heurísticas de detección de series
+- [ ] Interfaz para edición masiva de metadatos
+- [ ] Integración con bases de datos como TheTVDB o TMDB
+- [ ] Ajustes de configuración personalizables por el usuario
+- [ ] Historial de operaciones realizadas
+- [ ] Soporte para renombrar archivos según patrón definido
 
 ---
 
