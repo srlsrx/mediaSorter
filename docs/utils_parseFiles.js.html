@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>utils/parseFiles.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-components.html">components</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-hooks.html">hooks</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-pages.html">pages</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-stores.html">stores</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-stores_useSourceFolderStore.html">stores/useSourceFolderStore</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Button">Button</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Input">Input</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#buildDestination">buildDestination</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#classifyFiles">classifyFiles</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#detectCommonShowNames">detectCommonShowNames</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#inferShowName">inferShowName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#useViewManager">useViewManager</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">utils/parseFiles.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Classifies media files by extracting show name, season, and episode from filenames.
+ * Adds detection status and destination path for each file.
+ *
+ * @param {Array&lt;Object>} files - Array of file objects with at least 'name' and 'extension' properties.
+ * @returns {Array&lt;Object>} Array of classified file objects with show, season, episode, destination, detected, and modified properties.
+ *
+ * @author Nico
+ */
+export function classifyFiles(files) {
+    const videoExtensions = ['.mkv', '.mp4', '.avi', '.mov'];
+    files = files.filter(file => videoExtensions.includes(file.extension.toLowerCase()));
+
+    return files.map(file => {
+        const match = file.name.match(/(?:S?(\d{1,2})[xE](\d{1,2})|[^a-zA-Z](\d{1,2})[^a-zA-Z](\d{2}))/i);
+
+        const season = match
+            ? parseInt(match[1] || match[3], 10)
+            : 0;
+        const episode = match
+            ? parseInt(match[2] || match[4], 10)
+            : 0;
+
+        let show = inferShowName(file.name);
+        let detected = Boolean(match &amp;&amp; show &amp;&amp; !/[[(]/.test(show));
+        let modified = false;
+        let finalSeason = season;
+        let finalEpisode = episode;
+
+        if (!detected) {
+            const fallbackMatch = file.name.match(/(?:^|\D)(\d{1,3})(?!.*\d)/);
+            const episodeStr = fallbackMatch?.[1];
+
+            const isPotentialFalsePositive = /\[.*?cap\.?\d{3,}.*?\]/i.test(file.name) || /cap\.?\d{3,}/i.test(file.name);
+
+            if (fallbackMatch &amp;&amp; !isPotentialFalsePositive) {
+                finalSeason = 1;
+                finalEpisode = parseInt(episodeStr, 10);
+                detected = true;
+                const episodePattern = new RegExp(`[\\s_\\-\\.]?${episodeStr}(?!\\d)`);
+                show = inferShowName(file.name.replace(episodePattern, ''));
+            }
+        }
+
+        return {
+            ...file,
+            show,
+            season: finalSeason,
+            episode: finalEpisode,
+            destination: detected ? `/Shows/${show}/Season ${finalSeason}` : '',
+            detected,
+            modified,
+        };
+    });
+}
+
+/**
+ * Infers the show name from a filename by removing extension, brackets, parentheses, and episode/season patterns.
+ *
+ * @param {string} filename - The name of the file.
+ * @returns {string} The inferred show name.
+ *
+ * @author Nico
+ */
+function inferShowName(filename) {
+    const nameWithoutExtension = filename.replace(/\.[^/.]+$/, '');
+    const cleanedName = nameWithoutExtension
+        .replace(/\[.*?\]/g, '')
+        .replace(/\(.*?\)/g, '')
+        .replace(/[-_.]/g, ' ')
+        .trim();
+    const nameBeforeSeason = cleanedName.split(/S?\d{1,2}[xE]\d{1,2}|[^a-zA-Z](\d{1,2})[^a-zA-Z](\d{2})/i)[0];
+    return nameBeforeSeason.replace(/\d{1,3}$/, '').trim();
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Mon Jun 30 2025 19:35:15 GMT+0200 (hora de verano de Europa central) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
